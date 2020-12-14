@@ -1,5 +1,9 @@
 Feature: Carga de horas
 
+# Historias de usuario:
+# https://squad4-2020-2c.atlassian.net/jira/software/projects/S22/boards/1/backlog
+
+
   Background:
     Given la persona a ingresar es
       | Franco | Schischlo | 40394853 |
