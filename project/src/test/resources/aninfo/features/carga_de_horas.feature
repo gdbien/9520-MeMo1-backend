@@ -1,14 +1,15 @@
 Feature: Carga de horas
 
-# Historias de usuario:
-# https://squad4-2020-2c.atlassian.net/jira/software/projects/S22/boards/1/backlog
+  # Historias de usuario:
+  # https://squad4-2020-2c.atlassian.net/jira/software/projects/S22/boards/1/backlog
 
 
   Background:
     Given la persona a ingresar es
-      | Franco | Schischlo | 40394853 |
+      | Franco | Schischlo | 503 |
     And la tarea a ingresar es
-      | Crear bdd |
+      | 101 | Crear bdd |
+    And la fecha en la que trabajo a ingresar es "2020-12-10"
     And el sistema esta vacio
 
   Scenario Outline: Agregar horas a tarea en la que persona trabajó por primera vez

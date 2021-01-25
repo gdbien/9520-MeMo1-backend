@@ -1,6 +1,5 @@
 package aninfo.model;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,7 +9,7 @@ import aninfo.model.excepciones.TareaNoEncontradaExcepcion;
 public class SistemaCargador {
 	private Map<Persona, Map<Tarea, HorasTrabajadas>> personas = new HashMap<Persona, Map<Tarea, HorasTrabajadas>>();
 
-	public void cargarHoras(Persona persona, Tarea tarea, double cantHoras) {
+	public void cargarHoras(Persona persona, Tarea tarea, double cantHoras, String fechaTrabajada) {
 		if (!personas.containsKey(persona))
 			personas.put(persona, new HashMap<Tarea, HorasTrabajadas>());
 
@@ -18,7 +17,7 @@ public class SistemaCargador {
 		if (!tareas.containsKey(tarea))
 			tareas.put(tarea, new HorasTrabajadas());
 
-		tareas.get(tarea).agregarHoras(cantHoras, LocalDateTime.now());
+		tareas.get(tarea).agregarHoras(cantHoras, fechaTrabajada);
 	}
 
 	public double consultarHoras(Persona persona, Tarea tarea) {

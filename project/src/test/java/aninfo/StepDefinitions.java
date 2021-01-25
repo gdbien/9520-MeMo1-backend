@@ -17,6 +17,7 @@ public class StepDefinitions {
     private Persona persona;
     private Tarea tarea;
     private SistemaCargador sist_cargador;
+    private String fechaTrabajada;
 
     @Given("el sistema esta vacio")
     public void el_sistema_esta_vacio() {
@@ -26,18 +27,23 @@ public class StepDefinitions {
     @Given("la persona a ingresar es")
     public void la_persona_a_ingresar_es(io.cucumber.datatable.DataTable dataTable) {
         List<String> lista = dataTable.asList();
-        persona = new Persona(lista.get(0), lista.get(1), lista.get(2));
+        persona = new Persona(lista.get(0), lista.get(1), Integer.parseInt(lista.get(2)));
     }
 
     @Given("la tarea a ingresar es")
     public void la_tarea_a_ingresar_es(io.cucumber.datatable.DataTable dataTable) {
         List<String> lista = dataTable.asList();
-        tarea = new Tarea(lista.get(0));
+        tarea = new Tarea(Integer.parseInt(lista.get(0)), lista.get(1));
+    }
+
+    @Given("la fecha en la que trabajo a ingresar es {string}")
+    public void la_fecha_en_la_que_trabajo_a_ingresar_es(String fecha) {
+        fechaTrabajada = fecha;
     }
 
     @When("le cargo {double} horas a la tarea")
     public void le_cargo_horas_a_la_tarea(Double cantHoras) {
-        sist_cargador.cargarHoras(persona, tarea, cantHoras);
+        sist_cargador.cargarHoras(persona, tarea, cantHoras, fechaTrabajada);
     }
 
     @Then("las horas trabajadas en la tarea deberían ser {double}")
@@ -48,13 +54,13 @@ public class StepDefinitions {
 
     @Given("la persona ya trabajó {double} en la tarea")
     public void la_persona_ya_trabajó_en_la_tarea(Double cantHoras) {
-        sist_cargador.cargarHoras(persona, tarea, cantHoras);
+        sist_cargador.cargarHoras(persona, tarea, cantHoras, "2019-05-03");
     }
 
     @Given("la persona trabajó en otra tarea")
     public void la_persona_trabajó_en_otra_tarea() {
-        Tarea otraTarea = new Tarea("Tarea secundaria");
-        sist_cargador.cargarHoras(persona, otraTarea, 5);
+        Tarea otraTarea = new Tarea(203, "Tarea secundaria");
+        sist_cargador.cargarHoras(persona, otraTarea, 5, "2018-02-20");
     }
 
     @Then("la persona tiene cargada {int} tareas")

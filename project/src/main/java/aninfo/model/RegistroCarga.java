@@ -1,6 +1,6 @@
 package aninfo.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import aninfo.model.excepciones.RegistroConCantHorasInvalidasExcepcion;
 
@@ -9,12 +9,15 @@ public class RegistroCarga {
 
     private int id;
     private double cantHoras;
-    private LocalDateTime fecha;
+    private LocalDate fechaTrabajada;
+    private LocalDate fechaDeCarga;
 
-    public RegistroCarga(double cantHoras, LocalDateTime fecha) {
+    public RegistroCarga(double cantHoras, String fechaTrabajada) {
         this.id = RegistroCarga.nextId++;
         this.cantHoras = cantHoras;
-        this.fecha = fecha;
+        //Se puede lanzar error en el caso que fechaTrabajada sea mayor a fechaDeCarga.
+        this.fechaTrabajada = LocalDate.parse(fechaTrabajada);
+        this.fechaDeCarga = LocalDate.now();
     }
 
     public int getId() {

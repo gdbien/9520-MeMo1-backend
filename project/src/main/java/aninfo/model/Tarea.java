@@ -3,19 +3,21 @@ package aninfo.model;
 import java.util.Objects;
 
 public class Tarea {
-    private String titulo;
+    private int codigo;
+    private String nombre;
 
-    public Tarea(String titulo) {
-        this.titulo = titulo;
+    public Tarea(int codigo, String nombre) {
+        this.codigo = codigo;
+        this.nombre = nombre;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public int getCodigo() {
+        return codigo;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(titulo);
+        return Objects.hashCode(codigo);
     }
 
     @Override
@@ -26,7 +28,6 @@ public class Tarea {
             return true;
         if (getClass() != other.getClass())
             return false;
-        return Objects.equals(titulo, ((Tarea) other).getTitulo());
+        return Objects.equals(codigo, ((Tarea) other).getCodigo());
     }
-
 }

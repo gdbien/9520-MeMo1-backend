@@ -5,21 +5,21 @@ import java.util.Objects;
 public class Persona {
     private String nombre;
     private String apellido;
-    private String dni;
+    private int numLegajo;
 
-    public Persona(String nombre, String apellido, String dni) {
+    public Persona(String nombre, String apellido, int numLegajo) {
         this.nombre = nombre;
         this.apellido = apellido;
-        this.dni = dni;
+        this.numLegajo = numLegajo;
     }
 
-    public String getDni() {
-        return dni;
+    public int getnumLegajo() {
+        return numLegajo;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(dni);
+        return Objects.hashCode(numLegajo);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class Persona {
             return true;
         if (getClass() != other.getClass())
             return false;
-        return Objects.equals(dni, ((Persona) other).getDni());
+        return Objects.equals(numLegajo, ((Persona) other).getnumLegajo());
     }
 
     public String getNombre() {

@@ -1,6 +1,5 @@
 package aninfo.model;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,9 +15,9 @@ public class HorasTrabajadas {
         registros = new HashMap<Integer, RegistroCarga>();
     }
 
-    public void agregarHoras(double cantHoras, LocalDateTime fecha) {
+    public void agregarHoras(double cantHoras, String fechaTrabajada) {
         cantHorasTot += cantHoras;
-        RegistroCarga reg_carga = new RegistroCarga(cantHoras, fecha);
+        RegistroCarga reg_carga = new RegistroCarga(cantHoras, fechaTrabajada);
         registros.put(reg_carga.getId(), reg_carga);
     }
 
