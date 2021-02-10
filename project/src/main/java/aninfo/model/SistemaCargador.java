@@ -4,27 +4,36 @@ import java.util.HashMap;
 import java.util.Map;
 
 import aninfo.model.excepciones.PersonaNoEncontradaExcepcion;
+import aninfo.model.excepciones.ProyectoNoEncontradoExcepcion;
 import aninfo.model.excepciones.TareaNoEncontradaExcepcion;
 
 public class SistemaCargador {
-	private Map<Persona, Map<Tarea, HorasTrabajadas>> personas = new HashMap<Persona, Map<Tarea, HorasTrabajadas>>();
+	private Map<Persona, Map<Proyecto, Map<Tarea, HorasTrabajadas>>> personas = new HashMap<Persona, Map<Proyecto, Map<Tarea, HorasTrabajadas>>>();
 
-	public void cargarHoras(Persona persona, Tarea tarea, double cantHoras, String fechaTrabajada) {
+	public void cargarHoras(Persona persona, Proyecto proyecto, Tarea tarea, double cantHoras, String fechaTrabajada) {
 		if (!personas.containsKey(persona))
-			personas.put(persona, new HashMap<Tarea, HorasTrabajadas>());
+			personas.put(persona, new HashMap<Proyecto, Map<Tarea, HorasTrabajadas>>());
 
-		Map<Tarea, HorasTrabajadas> tareas = personas.get(persona);
+		Map<Proyecto, Map<Tarea, HorasTrabajadas>> proyectos = personas.get(persona);
+		if (!proyectos.containsKey(proyecto))
+			proyectos.put(proyecto, new HashMap<Tarea, HorasTrabajadas>());
+
+		Map<Tarea, HorasTrabajadas> tareas = proyectos.get(proyecto);
 		if (!tareas.containsKey(tarea))
 			tareas.put(tarea, new HorasTrabajadas());
 
 		tareas.get(tarea).agregarHoras(cantHoras, fechaTrabajada);
 	}
 
-	public double consultarHoras(Persona persona, Tarea tarea) {
+	public double consultarHoras(Persona persona, Proyecto proyecto, Tarea tarea) {
 		if (!personas.containsKey(persona))
 			throw new PersonaNoEncontradaExcepcion(persona);
 
-		Map<Tarea, HorasTrabajadas> tareas = personas.get(persona);
+		Map<Proyecto, Map<Tarea, HorasTrabajadas>> proyectos = personas.get(persona);
+		if (!proyectos.containsKey(proyecto))
+			throw new ProyectoNoEncontradoExcepcion(proyecto);
+
+		Map<Tarea, HorasTrabajadas> tareas = proyectos.get(proyecto);
 		if (!tareas.containsKey(tarea))
 			throw new TareaNoEncontradaExcepcion(tarea);
 
@@ -32,16 +41,27 @@ public class SistemaCargador {
 	}
 
 	public int obtenerCantTareas(Persona persona) {
+		int totalTareas = 0;
 		if (!personas.containsKey(persona))
 			throw new PersonaNoEncontradaExcepcion(persona);
-		return personas.get(persona).size();
+
+		Map<Proyecto, Map<Tarea, HorasTrabajadas>> proyectos = personas.get(persona);
+
+		for (Map<Tarea, HorasTrabajadas> tareas : proyectos.values()) {
+			totalTareas += tareas.size();
+		}
+		return totalTareas;
 	}
 
-	public void eliminarHoras(Persona persona, Tarea tarea, double cantHoras, int idRegistro) {
+	public void eliminarHoras(Persona persona, Proyecto proyecto, Tarea tarea, double cantHoras, int idRegistro) {
 		if (!personas.containsKey(persona))
 			throw new PersonaNoEncontradaExcepcion(persona);
 
-		Map<Tarea, HorasTrabajadas> tareas = personas.get(persona);
+		Map<Proyecto, Map<Tarea, HorasTrabajadas>> proyectos = personas.get(persona);
+		if (!proyectos.containsKey(proyecto))
+			throw new ProyectoNoEncontradoExcepcion(proyecto);
+
+		Map<Tarea, HorasTrabajadas> tareas = proyectos.get(proyecto);
 		if (!tareas.containsKey(tarea))
 			throw new TareaNoEncontradaExcepcion(tarea);
 
@@ -50,6 +70,8 @@ public class SistemaCargador {
 		if (hs_trabajadas.getCantHorasTot() == 0)
 			tareas.remove(tarea);
 		if (tareas.size() == 0)
+			proyectos.remove(proyecto);
+		if (proyectos.size() == 0)
 			personas.remove(persona);
 	}
 

@@ -7,6 +7,8 @@ Feature: Carga de horas
   Background:
     Given la persona a ingresar es
       | Franco | Schischlo | 503 |
+    And el proyecto a ingresar es
+      | 3000 | Techly |
     And la tarea a ingresar es
       | 101 | Crear bdd |
     And la fecha en la que trabajo a ingresar es "2020-12-10"
@@ -42,7 +44,6 @@ Feature: Carga de horas
       | 2.5            | 2               |
       | 7              | 2               |
 
-
   Scenario Outline: Eliminar menos horas a la tarea de las que la persona le dedico previamente a ella
     And la persona ya trabajó <cantidad horas> en la tarea
     When elimino <cantidad horas a eliminar> horas del registro <id registro>
@@ -64,4 +65,12 @@ Feature: Carga de horas
       | 14             | 20                        | 14          |
 
 
+  Scenario Outline: Agregar horas a tarea en nuevo proyecto cuando la persona ya trabajó en otro proyecto
+    And la persona trabajó en otra tarea en otro proyecto
+    When le cargo <cantidad horas> horas a la tarea
+    Then las horas trabajadas en la tarea deberían ser <cantidad horas>
+    And la persona tiene cargada <cantidad tareas> tareas
 
+    Examples:
+      | cantidad horas | cantidad tareas |
+      | 5              | 2               |

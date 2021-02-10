@@ -1,7 +1,6 @@
 package aninfo.model.excepciones;
 
 public class RegistroConCantHorasInvalidasExcepcion extends RuntimeException {
-
     /**
      *
      */
@@ -10,5 +9,4 @@ public class RegistroConCantHorasInvalidasExcepcion extends RuntimeException {
     public RegistroConCantHorasInvalidasExcepcion() {
         super("El registro debe eliminarse porque no tiene mas horas asociadas!");
     }
-
 }
