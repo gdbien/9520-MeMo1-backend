@@ -1,10 +1,10 @@
-package aninfo.model;
+package aninfo.modelo;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import aninfo.model.excepciones.RegistroConCantHorasInvalidasExcepcion;
-import aninfo.model.excepciones.RegistroNoEncontradoExcepcion;
+import aninfo.excepciones.RegistroConCantHorasInvalidasExcepcion;
+import aninfo.excepciones.RegistroNoEncontradoExcepcion;
 
 public class HorasTrabajadas {
     private double cantHorasTot;
@@ -38,7 +38,5 @@ public class HorasTrabajadas {
             registros.remove(idRegistro);
             cantHorasTot -= cantHorasActual;
         }
-
     }
-
 }

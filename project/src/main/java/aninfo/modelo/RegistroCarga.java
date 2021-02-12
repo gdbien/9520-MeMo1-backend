@@ -1,8 +1,8 @@
-package aninfo.model;
+package aninfo.modelo;
 
 import java.time.LocalDate;
 
-import aninfo.model.excepciones.RegistroConCantHorasInvalidasExcepcion;
+import aninfo.excepciones.RegistroConCantHorasInvalidasExcepcion;
 
 public class RegistroCarga {
     private static int nextId = 1;

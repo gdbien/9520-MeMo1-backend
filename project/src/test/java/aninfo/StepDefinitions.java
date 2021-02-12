@@ -1,18 +1,17 @@
 package aninfo;
 
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
-import io.cucumber.java.en.Then;
-
 import java.util.List;
 
 import org.junit.Assert;
 
-import aninfo.model.Persona;
-import aninfo.model.Proyecto;
-import aninfo.model.SistemaCargador;
-import aninfo.model.Tarea;
-import aninfo.model.excepciones.TareaNoEncontradaExcepcion;
+import aninfo.excepciones.TareaNoEncontradaExcepcion;
+import aninfo.modelo.Persona;
+import aninfo.modelo.Proyecto;
+import aninfo.modelo.SistemaCargador;
+import aninfo.modelo.Tarea;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
+import io.cucumber.java.en.When;
 
 public class StepDefinitions {
     private Persona persona;

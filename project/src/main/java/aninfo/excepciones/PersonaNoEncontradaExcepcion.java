@@ -1,6 +1,6 @@
-package aninfo.model.excepciones;
+package aninfo.excepciones;
 
-import aninfo.model.Persona;
+import aninfo.modelo.Persona;
 
 public class PersonaNoEncontradaExcepcion extends RuntimeException {
     /**

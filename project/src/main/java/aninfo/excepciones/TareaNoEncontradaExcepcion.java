@@ -1,6 +1,6 @@
-package aninfo.model.excepciones;
+package aninfo.excepciones;
 
-import aninfo.model.Tarea;
+import aninfo.modelo.Tarea;
 
 public class TareaNoEncontradaExcepcion extends RuntimeException {
     /**

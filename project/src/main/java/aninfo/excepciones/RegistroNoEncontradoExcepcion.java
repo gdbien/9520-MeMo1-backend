@@ -1,6 +1,6 @@
-package aninfo.model.excepciones;
+package aninfo.excepciones;
 
-import aninfo.model.RegistroCarga;
+import aninfo.modelo.RegistroCarga;
 
 public class RegistroNoEncontradoExcepcion extends RuntimeException {
     /**

@@ -1,4 +1,4 @@
-package aninfo.model;
+package aninfo.modelo;
 
 import java.util.Objects;
 

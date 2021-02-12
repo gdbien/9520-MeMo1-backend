@@ -1,6 +1,6 @@
-package aninfo.model.excepciones;
+package aninfo.excepciones;
 
-import aninfo.model.Proyecto;
+import aninfo.modelo.Proyecto;
 
 public class ProyectoNoEncontradoExcepcion extends RuntimeException {
     /**

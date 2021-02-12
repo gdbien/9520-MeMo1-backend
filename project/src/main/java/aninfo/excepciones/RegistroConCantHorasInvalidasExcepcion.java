@@ -1,4 +1,4 @@
-package aninfo.model.excepciones;
+package aninfo.excepciones;
 
 public class RegistroConCantHorasInvalidasExcepcion extends RuntimeException {
     /**

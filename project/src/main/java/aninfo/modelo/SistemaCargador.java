@@ -1,11 +1,11 @@
-package aninfo.model;
+package aninfo.modelo;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import aninfo.model.excepciones.PersonaNoEncontradaExcepcion;
-import aninfo.model.excepciones.ProyectoNoEncontradoExcepcion;
-import aninfo.model.excepciones.TareaNoEncontradaExcepcion;
+import aninfo.excepciones.PersonaNoEncontradaExcepcion;
+import aninfo.excepciones.ProyectoNoEncontradoExcepcion;
+import aninfo.excepciones.TareaNoEncontradaExcepcion;
 
 public class SistemaCargador {
 	private Map<Persona, Map<Proyecto, Map<Tarea, HorasTrabajadas>>> personas = new HashMap<Persona, Map<Proyecto, Map<Tarea, HorasTrabajadas>>>();
