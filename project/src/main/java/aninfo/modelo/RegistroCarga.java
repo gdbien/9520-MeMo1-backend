@@ -20,6 +20,12 @@ public class RegistroCarga {
         this.fechaDeCarga = LocalDate.now();
     }
 
+    public void eliminarHoras(double cantHoras) {
+        if (this.cantHoras - cantHoras <= 0)
+            throw new RegistroConCantHorasInvalidasExcepcion();
+        this.cantHoras -= cantHoras;
+    }
+
     public int getId() {
         return id;
     }
@@ -28,10 +34,26 @@ public class RegistroCarga {
         return cantHoras;
     }
 
-    public void eliminarHoras(double cantHoras) {
-        if (this.cantHoras - cantHoras <= 0)
-            throw new RegistroConCantHorasInvalidasExcepcion();
-        this.cantHoras -= cantHoras;
+    public void setCantHoras(double cantHoras) {
+        if (cantHoras <= 0)
+            throw new RegistroConCantHorasInvalidasExcepcion();     
+        this.cantHoras = cantHoras;
+    }
+
+    public LocalDate getFechaTrabajada() {
+        return fechaTrabajada;
+    }
+
+    public void setFechaTrabajada(LocalDate fechaTrabajada) {
+        this.fechaTrabajada = fechaTrabajada;
+    }
+
+    public LocalDate getFechaDeCarga() {
+        return fechaDeCarga;
+    }
+
+    public void setFechaDeCarga(LocalDate fechaDeCarga) {
+        this.fechaDeCarga = fechaDeCarga;
     }
 
 }

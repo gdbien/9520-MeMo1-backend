@@ -1,6 +1,8 @@
 package aninfo.modelo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import aninfo.excepciones.RegistroConCantHorasInvalidasExcepcion;
@@ -15,10 +17,11 @@ public class HorasTrabajadas {
         registros = new HashMap<Integer, RegistroCarga>();
     }
 
-    public void agregarHoras(double cantHoras, String fechaTrabajada) {
+    public RegistroCarga agregarHoras(double cantHoras, String fechaTrabajada) {
         cantHorasTot += cantHoras;
-        RegistroCarga reg_carga = new RegistroCarga(cantHoras, fechaTrabajada);
-        registros.put(reg_carga.getId(), reg_carga);
+        RegistroCarga regCarga = new RegistroCarga(cantHoras, fechaTrabajada);
+        registros.put(regCarga.getId(), regCarga);
+        return regCarga;
     }
 
     public double getCantHorasTot() {
@@ -29,14 +32,32 @@ public class HorasTrabajadas {
         if (!registros.containsKey(idRegistro))
             throw new RegistroNoEncontradoExcepcion(idRegistro);
 
-        RegistroCarga reg_carga = registros.get(idRegistro);
-        Double cantHorasActual = reg_carga.getCantHoras();
+        RegistroCarga regCarga = registros.get(idRegistro);
+        Double cantHorasActual = regCarga.getCantHoras();
         try {
-            reg_carga.eliminarHoras(cantHoras);
+            regCarga.eliminarHoras(cantHoras);
             cantHorasTot -= cantHoras;
         } catch (RegistroConCantHorasInvalidasExcepcion e) {
             registros.remove(idRegistro);
             cantHorasTot -= cantHorasActual;
         }
     }
+
+	public void eliminar(int idRegistro) {
+        if (!registros.containsKey(idRegistro))
+            throw new RegistroNoEncontradoExcepcion(idRegistro);
+        RegistroCarga regCarga = registros.get(idRegistro);
+        cantHorasTot -= regCarga.getCantHoras();
+        registros.remove(idRegistro);
+	}
+
+	public List<RegistroCarga> getRegistros() {
+		return new ArrayList<RegistroCarga>(registros.values());
+	}
+
+	public RegistroCarga obtenerRegistro(int idRegistro) {
+        if (!registros.containsKey(idRegistro))
+            throw new RegistroNoEncontradoExcepcion(idRegistro);
+        return registros.get(idRegistro);
+	}
 }

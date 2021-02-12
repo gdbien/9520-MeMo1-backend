@@ -7,8 +7,8 @@ import org.junit.Assert;
 import aninfo.excepciones.TareaNoEncontradaExcepcion;
 import aninfo.modelo.Persona;
 import aninfo.modelo.Proyecto;
-import aninfo.modelo.SistemaCargador;
 import aninfo.modelo.Tarea;
+import aninfo.servicio.ServicioHoras;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -16,19 +16,19 @@ import io.cucumber.java.en.When;
 public class StepDefinitions {
     private Persona persona;
     private Tarea tarea;
-    private SistemaCargador sist_cargador;
+    private ServicioHoras sist_cargador;
     private String fechaTrabajada;
     private Proyecto proyecto;
 
     @Given("el sistema esta vacio")
     public void el_sistema_esta_vacio() {
-        sist_cargador = new SistemaCargador();
+        sist_cargador = new ServicioHoras();
     }
 
     @Given("la persona a ingresar es")
     public void la_persona_a_ingresar_es(io.cucumber.datatable.DataTable dataTable) {
         List<String> lista = dataTable.asList();
-        persona = new Persona(lista.get(0), lista.get(1), Integer.parseInt(lista.get(2)));
+        persona = new Persona(Integer.parseInt(lista.get(0)), lista.get(1), lista.get(2));
     }
 
     @Given("el proyecto a ingresar es")

@@ -6,7 +6,7 @@ Feature: Carga de horas
 
   Background:
     Given la persona a ingresar es
-      | Franco | Schischlo | 503 |
+      | 503 | Franco | Schischlo | 
     And el proyecto a ingresar es
       | 3000 | Techly |
     And la tarea a ingresar es
