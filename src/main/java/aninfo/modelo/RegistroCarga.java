@@ -12,6 +12,7 @@ public class RegistroCarga {
     private LocalDate fechaTrabajada;
     private LocalDate fechaDeCarga;
 
+    //esta clase vuela
     public RegistroCarga(double cantHoras, String fechaTrabajada) {
         this.id = RegistroCarga.nextId++;
         this.cantHoras = cantHoras;
@@ -20,6 +21,7 @@ public class RegistroCarga {
         this.fechaDeCarga = LocalDate.now();
     }
 
+    //revisar metodo
     public void eliminarHoras(double cantHoras) {
         if (this.cantHoras - cantHoras <= 0)
             throw new RegistroConCantHorasInvalidasExcepcion();

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import aninfo.modelo.HorasTrabajadas;
 import aninfo.modelo.Persona;
 import aninfo.modelo.Proyecto;
 import aninfo.modelo.RegistroCarga;
@@ -45,7 +46,7 @@ public class DemoApplication {
 
 	@PostMapping("/cargas/{idLegajo}/{idProyecto}/{idTarea}")
 	@ResponseStatus(HttpStatus.CREATED)
-	public RegistroCarga cargarHoras(@RequestParam int idLegajo,
+	public HorasTrabajadas cargarHoras(@RequestParam int idLegajo,
 									 @RequestParam int idProyecto,
 									 @RequestParam int idTarea,
 									 @RequestParam double cantHoras,
@@ -72,11 +73,11 @@ public class DemoApplication {
 		//Llamada a API para obtener Tarea, lo voy a simular
 		Tarea tarea = new Tarea(idTarea, "Arreglar bug lista enlazada");
 
-		servicioHoras.eliminarRegistro(persona, proyecto, tarea, idRegistro);
+		servicioHoras.eliminarRegistro(idRegistro);
 	}
 
 	@GetMapping("/cargas/{idLegajo}/{idProyecto}/{idTarea}")
-	public Collection<RegistroCarga> obtenerRegistros(
+	public Collection<HorasTrabajadas> obtenerRegistros(
 									@PathVariable int idLegajo,
 									@PathVariable int idProyecto,
 									@PathVariable int idTarea) {
@@ -91,7 +92,7 @@ public class DemoApplication {
 	}
 
 	@GetMapping("/cargas/{idLegajo}/{idProyecto}/{idTarea}/{idRegistro}")
-	public RegistroCarga obtenerRegistro(@PathVariable int idLegajo,
+	public HorasTrabajadas obtenerRegistro(@PathVariable int idLegajo,
 										 @PathVariable int idProyecto,
 										 @PathVariable int idTarea,
 										 @PathVariable int idRegistro) {
@@ -106,7 +107,7 @@ public class DemoApplication {
 	}
 
 	@PutMapping("/cargas/{idLegajo}/{idProyecto}/{idTarea}/{idRegistro}")
-	public RegistroCarga actualizarRegistro(@PathVariable int idLegajo,
+	public HorasTrabajadas actualizarRegistro(@PathVariable int idLegajo,
 										    @PathVariable int idProyecto,
 										 	@PathVariable int idTarea,
 											@PathVariable int idRegistro,
