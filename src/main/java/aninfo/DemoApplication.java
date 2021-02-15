@@ -73,7 +73,7 @@ public class DemoApplication {
 		//Llamada a API para obtener Tarea, lo voy a simular
 		Tarea tarea = new Tarea(idTarea, "Arreglar bug lista enlazada");
 
-		servicioHoras.eliminarRegistro(idRegistro);
+		servicioHoras.eliminarRegistro(persona, proyecto, tarea, idRegistro);
 	}
 
 	@GetMapping("/cargas/{idLegajo}/{idProyecto}/{idTarea}")
@@ -122,7 +122,7 @@ public class DemoApplication {
 		return servicioHoras.actualizarRegistro(persona, proyecto, tarea, idRegistro, cantHoras);
 	}
 
-
+	
 	@GetMapping("/personas")
 	public Collection<Persona> obtenerPersonas() {
 		return servicioPersonas.obtenerPersonas();

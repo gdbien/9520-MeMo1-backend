@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 //import org.graalvm.compiler.hotspot.replacements.HotSpotArraySubstitutions;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 import aninfo.excepciones.CargarHorasInvalidasException;
 import aninfo.excepciones.PersonaNoEncontradaExcepcion;
 import aninfo.excepciones.ProyectoNoEncontradoExcepcion;
+import aninfo.excepciones.RegistroNoEncontradoExcepcion;
 import aninfo.excepciones.TareaNoEncontradaExcepcion;
 import aninfo.modelo.HorasTrabajadas;
 import aninfo.modelo.Persona;
@@ -37,11 +37,11 @@ public class ServicioHoras {
 		return repositorioHorasTrabajadas.save(horas);
 	}
 
-	//¿Como obtenemos las horas totales?
+	//devuelve la cantidad total de horas que una persona trabajó en una tarea específica.
 	public double consultarHoras(Persona persona, Proyecto proyecto, Tarea tarea) {
 		double totalHoras = 0;
 		Collection<HorasTrabajadas> horas = new ArrayList<>();
-        repositorioHorasTrabajadas.findAllHorasTrabajadasByPersonaAndProyectoAndTarea(
+        repositorioHorasTrabajadas.findAllHorasTrabajadasByIdPersonaAndIdProyectoAndIdTarea(
 			persona.getNumLegajo(), proyecto.getCodigo(), tarea.getCodigo()).forEach(horas::add);
 		for (Iterator<HorasTrabajadas> iterator = horas.iterator(); iterator.hasNext();){
 			totalHoras += ((HorasTrabajadas) iterator).getCantHoras();
@@ -87,29 +87,82 @@ public class ServicioHoras {
 			personas.remove(persona);
 	}*/
 
-	public void eliminarRegistro(int idRegistro) {
+	public void eliminarRegistro(Persona persona, Proyecto proyecto, Tarea tarea, int idRegistro) {
+
+		this.validarPersonaProyectoTareaYRegistro(persona, proyecto, tarea, idRegistro);
+
 		repositorioHorasTrabajadas.deleteById(idRegistro);
 	}
 
 	public Collection<HorasTrabajadas> obtenerRegistros(Persona persona, Proyecto proyecto, Tarea tarea) {
+
+		this.validarPersonaProyectoYTarea(persona, proyecto, tarea);
+
 		Collection<HorasTrabajadas> horas = new ArrayList<>();
-        repositorioHorasTrabajadas.findAllHorasTrabajadasByPersonaAndProyectoAndTarea(
+        repositorioHorasTrabajadas.findAllHorasTrabajadasByIdPersonaAndIdProyectoAndIdTarea(
 			persona.getNumLegajo(), proyecto.getCodigo(), tarea.getCodigo()).forEach(horas::add);
-        return horas;
+
+		return horas;
+	}
+
+	/* PRE: recibe una Persona, Proyecto, Tarea
+	
+	   POST:se fija en el repositorio si existe algun registro que tenga el idPersona, idProyecto 
+	   e idTarea correspondiente. si en alguno de los pasos no encuentra un registro que contenga 
+	   alguno de esos ids entonces lanza una excepción.
+	*/
+	private void validarPersonaProyectoYTarea(Persona persona, Proyecto proyecto, Tarea tarea) {
+
+		if ( !repositorioHorasTrabajadas.existsByIdPersona(persona.getNumLegajo()) ){
+			throw new PersonaNoEncontradaExcepcion(persona);
+		}
+		
+		if ( !repositorioHorasTrabajadas.existsByIdPersonaAndIdProyecto(persona.getNumLegajo(), 
+																		proyecto.getCodigo()) ){
+			throw new ProyectoNoEncontradoExcepcion(proyecto);
+		}
+
+		if( !repositorioHorasTrabajadas.existsByIdPersonaAndIdProyectoAndIdTarea( persona.getNumLegajo(),
+																				  proyecto.getCodigo(),
+																				  tarea.getCodigo()) ){
+			throw new TareaNoEncontradaExcepcion(tarea);
+		}
+	}
+
+	private void validarPersonaProyectoTareaYRegistro(Persona persona, Proyecto proyecto, Tarea tarea, int idRegistro) {
+
+		this.validarPersonaProyectoYTarea(persona, proyecto, tarea);
+
+		if( !repositorioHorasTrabajadas.existsByIdPersonaAndIdProyectoAndIdTareaAndId(persona.getNumLegajo(),
+																					  proyecto.getCodigo(),  
+																					  tarea.getCodigo(),  
+																					  idRegistro) ){
+
+			throw new RegistroNoEncontradoExcepcion(idRegistro);
+		}
 	}
 
 	public HorasTrabajadas obtenerRegistro(Persona persona, Proyecto proyecto, Tarea tarea, int idRegistro) {
-		return repositorioHorasTrabajadas.findHorasTrabajadasById(idRegistro);
+		
+		this.validarPersonaProyectoYTarea(persona, proyecto, tarea);
+		
+		HorasTrabajadas horas = repositorioHorasTrabajadas.findHorasTrabajadasByIdPersonaAndIdProyectoAndIdTareaAndId(persona.getNumLegajo(),
+								proyecto.getCodigo(),tarea.getCodigo(), idRegistro);
+		
+		return horas; 
 	}
 
 	public HorasTrabajadas actualizarRegistro(Persona persona, Proyecto proyecto, Tarea tarea, int idRegistro, int cantHoras) {
 		if (cantHoras <= 0) {
             throw new CargarHorasInvalidasException();
         }
+		
+		this.validarPersonaProyectoTareaYRegistro(persona, proyecto, tarea, idRegistro);
 
        	HorasTrabajadas horas = repositorioHorasTrabajadas.findHorasTrabajadasById(idRegistro);
         horas.setCantHoras(cantHoras);
 		repositorioHorasTrabajadas.save(horas);
 		return horas;
 	}
+
 }

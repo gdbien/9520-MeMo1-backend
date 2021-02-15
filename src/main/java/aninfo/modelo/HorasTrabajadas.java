@@ -1,9 +1,5 @@
 package aninfo.modelo;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +9,6 @@ import javax.persistence.Id;
 import java.time.LocalDate;
 
 import aninfo.excepciones.RegistroConCantHorasInvalidasExcepcion;
-import aninfo.excepciones.RegistroNoEncontradoExcepcion;
 
 @Entity
 public class HorasTrabajadas {
@@ -38,7 +33,9 @@ public class HorasTrabajadas {
         this.fechaTrabajada = LocalDate.parse(fechaTrabajada);
         this.fechaDeCarga = LocalDate.now();
     }*/
+    public HorasTrabajadas(){
 
+    }
     public HorasTrabajadas(double cantHoras, String fechaTrabajada, int idPersona, int idProyecto, int idTarea) {
         //this.id = HorasTrabajadas.nextId++;
         this.cantHoras = cantHoras;
