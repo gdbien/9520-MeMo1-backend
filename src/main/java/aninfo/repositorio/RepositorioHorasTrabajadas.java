@@ -4,6 +4,7 @@ import aninfo.modelo.HorasTrabajadas;
 
 import java.util.Collection;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -11,16 +12,15 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface RepositorioHorasTrabajadas extends CrudRepository<HorasTrabajadas, Integer> {
 
     HorasTrabajadas findHorasTrabajadasById(int id);
-
-    HorasTrabajadas findHorasTrabajadasByIdPersonaAndIdProyectoAndIdTareaAndId(int idPersona, int idProyecto, int idTarea, int id);
-    
-    Collection<HorasTrabajadas> findAllHorasTrabajadasByIdPersonaAndIdProyectoAndIdTarea(int idPersona, int idProyecto, int idTarea);
+  
+	Collection<HorasTrabajadas> findAllHorasTrabajadasByIdPersonaAndIdProyectoAndIdTarea(int idPersona, int idProyecto, int idTarea);
+	
+	@Query("select count(distinct idTarea) from HorasTrabajadas h where h.idPersona = ?1")
+	int contarTareasTrabajadasDePersona(int idPersona);
 
     boolean existsByIdPersona(int idPersona);
 
 	boolean existsByIdProyecto(int idProyecto);
-
-	boolean existsByIdProyectoAndIdTarea(int idProyecto , int idTarea);
 
 	boolean existsByIdPersonaAndIdProyecto(int numLegajo, int idProyecto);
 

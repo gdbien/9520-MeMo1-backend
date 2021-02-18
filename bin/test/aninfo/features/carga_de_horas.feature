@@ -6,13 +6,12 @@ Feature: Carga de horas
 
   Background:
     Given la persona a ingresar es
-      | 503 | Franco | Schischlo | 
+      | 503 | Franco | Schischlo |
     And el proyecto a ingresar es
       | 3000 | Techly |
     And la tarea a ingresar es
       | 101 | Crear bdd |
     And la fecha en la que trabajo a ingresar es "2020-12-10"
-    And el sistema esta vacio
 
   Scenario Outline: Agregar horas a tarea en la que persona trabajó por primera vez
     When le cargo <cantidad horas> horas a la tarea

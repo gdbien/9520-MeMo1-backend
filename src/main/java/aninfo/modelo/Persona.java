@@ -5,15 +5,16 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
 public class Persona {
+    @JsonAlias("legajo")
+    private int numLegajo;
+
     @JsonAlias("Nombre")
     private String nombre;
 
     @JsonAlias("Apellido")
     private String apellido;
 
-    @JsonAlias("legajo")
-    private int numLegajo;
-
+    
     public Persona() {
     }
 

@@ -2,30 +2,21 @@ package aninfo.modelo;
 
 import java.time.LocalDate;
 
-import aninfo.excepciones.RegistroConCantHorasInvalidasExcepcion;
-
 public class RegistroCarga {
-    private static int nextId = 1;
-
     private int id;
     private double cantHoras;
     private LocalDate fechaTrabajada;
     private LocalDate fechaDeCarga;
 
-    //esta clase vuela
-    public RegistroCarga(double cantHoras, String fechaTrabajada) {
-        this.id = RegistroCarga.nextId++;
+    public RegistroCarga(int id, double cantHoras, LocalDate fechaTrabajada, LocalDate fechaDeCarga) {
+        this.id = id;
         this.cantHoras = cantHoras;
-        //Se puede lanzar error en el caso que fechaTrabajada sea mayor a fechaDeCarga.
-        this.fechaTrabajada = LocalDate.parse(fechaTrabajada);
-        this.fechaDeCarga = LocalDate.now();
+        this.fechaTrabajada = fechaTrabajada;
+        this.fechaDeCarga = fechaDeCarga;
     }
 
-    //revisar metodo
-    public void eliminarHoras(double cantHoras) {
-        if (this.cantHoras - cantHoras <= 0)
-            throw new RegistroConCantHorasInvalidasExcepcion();
-        this.cantHoras -= cantHoras;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getId() {
@@ -36,9 +27,7 @@ public class RegistroCarga {
         return cantHoras;
     }
 
-    public void setCantHoras(double cantHoras) {
-        if (cantHoras <= 0)
-            throw new RegistroConCantHorasInvalidasExcepcion();     
+    public void setCantHoras(double cantHoras) {     
         this.cantHoras = cantHoras;
     }
 
@@ -57,5 +46,4 @@ public class RegistroCarga {
     public void setFechaDeCarga(LocalDate fechaDeCarga) {
         this.fechaDeCarga = fechaDeCarga;
     }
-
 }
