@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import aninfo.excepciones.RegistroConCantHorasInvalidasExcepcion;
+import aninfo.excepciones.RegistroConFechaInvalidaExcepcion;
 
 @Entity
 public class HorasTrabajadas {
@@ -27,15 +28,20 @@ public class HorasTrabajadas {
     }
 
     public HorasTrabajadas(int idPersona, int idProyecto, int idTarea, double cantHoras, String fechaTrabajada) {
-        if (cantHoras <= 0)
+        if (cantHoras <= 0 || cantHoras > 24)
             throw new RegistroConCantHorasInvalidasExcepcion();
+
+        LocalDate fCarga = LocalDate.now();
+        LocalDate fTrabajada = LocalDate.parse(fechaTrabajada);
+        if (fTrabajada.isAfter(fCarga))
+            throw new RegistroConFechaInvalidaExcepcion();
+
         this.idPersona = idPersona;
         this.idProyecto = idProyecto;
         this.idTarea = idTarea;
         this.cantHoras = cantHoras;
-        // Se puede lanzar error en el caso que fechaTrabajada sea mayor a fechaDeCarga.
-        this.fechaTrabajada = LocalDate.parse(fechaTrabajada);
-        this.fechaDeCarga = LocalDate.now();
+        this.fechaTrabajada = fTrabajada;
+        this.fechaDeCarga = fCarga;
     }
 
     public int getId() {
@@ -47,7 +53,7 @@ public class HorasTrabajadas {
     }
 
     public void setCantHoras(double cantHoras) {
-        if (cantHoras <= 0)
+        if (cantHoras <= 0 || cantHoras > 24)
             throw new RegistroConCantHorasInvalidasExcepcion();
         this.cantHoras = cantHoras;
     }

@@ -77,8 +77,8 @@ public class DemoApplication {
 
 	@GetMapping("/cargas/personas/{idPersona}/proyectos/{idProyecto}/tareas/{idTarea}/registros")
 	public Collection<RegistroCarga> obtenerRegistros(@PathVariable int idPersona,
-														@PathVariable int idProyecto,
-														@PathVariable int idTarea) {
+													  @PathVariable int idProyecto,
+													  @PathVariable int idTarea) {
 		Persona persona = servicioPersonas.obtenerPersona(idPersona);
 		//Llamada a API para obtener Proyecto, lo voy a simular
 		Proyecto proyecto = new Proyecto(idProyecto, "Techly");
@@ -90,9 +90,9 @@ public class DemoApplication {
 
 	@GetMapping("/cargas/personas/{idPersona}/proyectos/{idProyecto}/tareas/{idTarea}/registros/{idRegistro}")
 	public RegistroCarga obtenerRegistro(@PathVariable int idPersona,
-										   @PathVariable int idProyecto,
-										   @PathVariable int idTarea,
-										   @PathVariable int idRegistro) {
+										 @PathVariable int idProyecto,
+										 @PathVariable int idTarea,
+										 @PathVariable int idRegistro) {
 		
 		Persona persona = servicioPersonas.obtenerPersona(idPersona);
 		//Llamada a API para obtener Proyecto, lo voy a simular
@@ -105,10 +105,10 @@ public class DemoApplication {
 
 	@PatchMapping("/cargas/personas/{idPersona}/proyectos/{idProyecto}/tareas/{idTarea}/registros/{idRegistro}")
 	public RegistroCarga actualizarRegistro(@PathVariable int idPersona,
-										      @PathVariable int idProyecto,
-										 	  @PathVariable int idTarea,
-											  @PathVariable int idRegistro,
-											  @RequestBody int cantHoras) {
+										    @PathVariable int idProyecto,
+										 	@PathVariable int idTarea,
+											@PathVariable int idRegistro,
+											@RequestBody double cantHoras) {
 		
 		Persona persona = servicioPersonas.obtenerPersona(idPersona);
 		//Llamada a API para obtener Proyecto, lo voy a simular
