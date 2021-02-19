@@ -1,11 +1,8 @@
-package aninfo;
+package aninfo.controladores;
 
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,28 +17,16 @@ import aninfo.modelo.Persona;
 import aninfo.modelo.Proyecto;
 import aninfo.modelo.RegistroCarga;
 import aninfo.modelo.Tarea;
-import aninfo.servicio.ServicioHoras;
+import aninfo.servicio.ServicioCargas;
 import aninfo.servicio.ServicioPersonas;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @RestController
-@SpringBootApplication
-@EnableSwagger2
-public class DemoApplication {
-
-	@Autowired
-	private ServicioHoras servicioHoras;
-
-	@Autowired
-	private ServicioPersonas servicioPersonas;
-
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
+public class ControladorCargas {
+    @Autowired
+    private ServicioCargas servicioHoras;
+    
+    @Autowired
+    private ServicioPersonas servicioPersonas;
 
 	@PostMapping("/cargas/personas/{idPersona}/proyectos/{idProyecto}/tareas/{idTarea}")
 	@ResponseStatus(HttpStatus.CREATED)
@@ -117,28 +102,9 @@ public class DemoApplication {
 		Tarea tarea = new Tarea(idTarea, "Arreglar bug lista enlazada");
 
 		return servicioHoras.actualizarRegistro(persona, proyecto, tarea, idRegistro, cantHoras);
-	}
-	
-	@GetMapping("/personas")
-	public Collection<Persona> obtenerPersonas() {
-		return servicioPersonas.obtenerPersonas();
-	}
-
-	@GetMapping("/personas/{idPersona}")
-	public Persona obtenerPersona(@PathVariable int idPersona) {
-		return servicioPersonas.obtenerPersona(idPersona);
-	}
-
-	@Bean
-	public Docket apiDocket() {
-		return new Docket(DocumentationType.SWAGGER_2)
-			.select()
-			.apis(RequestHandlerSelectors.any())
-			.paths(PathSelectors.any())
-			.build();
-	}
-
-	//Wrapper para POST cargarHoras
+    }
+    
+    //Wrapper para POST cargarHoras
 	private static class CargaHora {
 		private double cantidadHoras;
 		private String fechaTrabajada;

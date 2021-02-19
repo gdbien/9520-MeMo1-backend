@@ -18,7 +18,7 @@ import aninfo.modelo.Tarea;
 import aninfo.repositorio.RepositorioHorasTrabajadas;
 
 @Service
-public class ServicioHoras {
+public class ServicioCargas {
     @Autowired
 	private RepositorioHorasTrabajadas repositorioHorasTrabajadas;
 	

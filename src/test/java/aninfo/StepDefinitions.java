@@ -11,19 +11,19 @@ import aninfo.excepciones.TareaNoEncontradaExcepcion;
 import aninfo.modelo.Persona;
 import aninfo.modelo.Proyecto;
 import aninfo.modelo.Tarea;
-import aninfo.servicio.ServicioHoras;
+import aninfo.servicio.ServicioCargas;
 import cucumber.api.DataTable;
 import cucumber.api.java.After;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
-@ContextConfiguration(classes = DemoApplication.class)
+@ContextConfiguration(classes = Aplicacion.class)
 @WebAppConfiguration
 public class StepDefinitions {
 
     @Autowired
-    ServicioHoras servicioHoras;
+    ServicioCargas servicioHoras;
 
     private Persona persona;
     private Tarea tarea;
