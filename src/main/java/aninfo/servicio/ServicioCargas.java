@@ -55,11 +55,11 @@ public class ServicioCargas {
 			throw new PersonaNoEncontradaExcepcion(persona.getNumLegajo());
 		if (!repositorioHorasTrabajadas.existsByIdPersonaAndIdProyecto(persona.getNumLegajo(), 
 																	   proyecto.getCodigo()))
-			throw new ProyectoNoEncontradoExcepcion(proyecto);
+			throw new ProyectoNoEncontradoExcepcion(proyecto.getCodigo());
 		if (!repositorioHorasTrabajadas.existsByIdPersonaAndIdProyectoAndIdTarea(persona.getNumLegajo(),
 																				 proyecto.getCodigo(),
 																				 tarea.getCodigo()))
-			throw new TareaNoEncontradaExcepcion(tarea);
+			throw new TareaNoEncontradaExcepcion(proyecto.getCodigo(), tarea.getCodigo());
 	}
 
 	private void validarPersonaProyectoTareaYRegistro(Persona persona, Proyecto proyecto, Tarea tarea, int idRegistro) {

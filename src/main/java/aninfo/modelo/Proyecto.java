@@ -2,8 +2,13 @@ package aninfo.modelo;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 public class Proyecto {
+    @JsonAlias("codeId")
     private int codigo;
+
+    @JsonAlias("name")
     private String nombre;
 
     public Proyecto(int codigo, String nombre) {
@@ -29,6 +34,9 @@ public class Proyecto {
         if (getClass() != other.getClass())
             return false;
         return Objects.equals(codigo, ((Proyecto) other).getCodigo());
+    }
+
+    public Proyecto() {
     }
 
 }

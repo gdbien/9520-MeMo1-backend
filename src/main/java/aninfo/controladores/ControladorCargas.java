@@ -2,8 +2,11 @@ package aninfo.controladores;
 
 import java.util.Collection;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -12,7 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.client.RestTemplate;
 
+import aninfo.excepciones.ProyectoNoEncontradoExcepcion;
+import aninfo.excepciones.TareaNoEncontradaExcepcion;
 import aninfo.modelo.Persona;
 import aninfo.modelo.Proyecto;
 import aninfo.modelo.RegistroCarga;
@@ -31,16 +38,12 @@ public class ControladorCargas {
 	@PostMapping("/cargas/personas/{idPersona}/proyectos/{idProyecto}/tareas/{idTarea}")
 	@ResponseStatus(HttpStatus.CREATED)
 	public RegistroCarga cargarHoras(@PathVariable int idPersona,
-									   @PathVariable int idProyecto,
-									   @PathVariable int idTarea,
-									   @RequestBody CargaHora carga) {
-		
+									 @PathVariable int idProyecto,
+									 @PathVariable int idTarea,
+									 @RequestBody CargaHora carga) {	
 		Persona persona = servicioPersonas.obtenerPersona(idPersona);
-		//Llamada a API para obtener Proyecto, lo voy a simular
-		Proyecto proyecto = new Proyecto(idProyecto, "Techly");
-		//Llamada a API para obtener Tarea, lo voy a simular
-		Tarea tarea = new Tarea(idTarea, "Arreglar bug lista enlazada");
-
+		Proyecto proyecto = buscarProyecto(idProyecto);
+		Tarea tarea = buscarTarea(idProyecto, idTarea);
 		return servicioHoras.cargarHoras(persona, proyecto, tarea, carga.getCantidadHoras(), carga.getFechaTrabajada());
 	}
 
@@ -49,14 +52,10 @@ public class ControladorCargas {
 	public void eliminarRegistro(@PathVariable int idPersona,
 								 @PathVariable int idProyecto,
 								 @PathVariable int idTarea,
-								 @PathVariable int idRegistro) {
-		
+								 @PathVariable int idRegistro) {	
 		Persona persona = servicioPersonas.obtenerPersona(idPersona);
-		//Llamada a API para obtener Proyecto, lo voy a simular
-		Proyecto proyecto = new Proyecto(idProyecto, "Techly");
-		//Llamada a API para obtener Tarea, lo voy a simular
-		Tarea tarea = new Tarea(idTarea, "Arreglar bug lista enlazada");
-
+		Proyecto proyecto = buscarProyecto(idProyecto);
+		Tarea tarea = buscarTarea(idProyecto, idTarea);
 		servicioHoras.eliminarRegistro(persona, proyecto, tarea, idRegistro);
 	}
 
@@ -65,11 +64,8 @@ public class ControladorCargas {
 													  @PathVariable int idProyecto,
 													  @PathVariable int idTarea) {
 		Persona persona = servicioPersonas.obtenerPersona(idPersona);
-		//Llamada a API para obtener Proyecto, lo voy a simular
-		Proyecto proyecto = new Proyecto(idProyecto, "Techly");
-		//Llamada a API para obtener Tarea, lo voy a simular
-		Tarea tarea = new Tarea(idTarea, "Arreglar bug lista enlazada");
-
+		Proyecto proyecto = buscarProyecto(idProyecto);
+		Tarea tarea = buscarTarea(idProyecto, idTarea);
 		return servicioHoras.obtenerRegistros(persona, proyecto, tarea);
 	}
 
@@ -78,13 +74,9 @@ public class ControladorCargas {
 										 @PathVariable int idProyecto,
 										 @PathVariable int idTarea,
 										 @PathVariable int idRegistro) {
-		
 		Persona persona = servicioPersonas.obtenerPersona(idPersona);
-		//Llamada a API para obtener Proyecto, lo voy a simular
-		Proyecto proyecto = new Proyecto(idProyecto, "Techly");
-		//Llamada a API para obtener Tarea, lo voy a simular
-		Tarea tarea = new Tarea(idTarea, "Arreglar bug lista enlazada");
-
+		Proyecto proyecto = buscarProyecto(idProyecto);
+		Tarea tarea = buscarTarea(idProyecto, idTarea);
 		return servicioHoras.obtenerRegistro(persona, proyecto, tarea, idRegistro);
 	}
 
@@ -93,18 +85,52 @@ public class ControladorCargas {
 										    @PathVariable int idProyecto,
 										 	@PathVariable int idTarea,
 											@PathVariable int idRegistro,
-											@RequestBody double cantHoras) {
-		
+											@RequestBody double cantHoras) {	
 		Persona persona = servicioPersonas.obtenerPersona(idPersona);
-		//Llamada a API para obtener Proyecto, lo voy a simular
-		Proyecto proyecto = new Proyecto(idProyecto, "Techly");
-		//Llamada a API para obtener Tarea, lo voy a simular
-		Tarea tarea = new Tarea(idTarea, "Arreglar bug lista enlazada");
-
+		Proyecto proyecto = buscarProyecto(idProyecto);
+		Tarea tarea = buscarTarea(idProyecto, idTarea);
 		return servicioHoras.actualizarRegistro(persona, proyecto, tarea, idRegistro, cantHoras);
     }
     
-    //Wrapper para POST cargarHoras
+	private Proyecto buscarProyecto(int idProyecto) {
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<Proyecto> respProyecto;
+
+		try {
+			respProyecto = restTemplate.getForEntity(
+                					"https://psa-projects.herokuapp.com/projects/project?id={idProyecto}",
+									Proyecto.class, idProyecto);							
+		} catch (HttpStatusCodeException e) {
+			if (e.getStatusCode() == HttpStatus.NOT_FOUND)
+				throw new ProyectoNoEncontradoExcepcion(idProyecto);
+			throw e;
+		}
+		
+		return respProyecto.getBody();
+	}
+
+	private Tarea buscarTarea(int idProyecto, int idTarea) {
+		RestTemplate restTemplate = new RestTemplate();
+		ResponseEntity<ObjectNode> respTarea;
+
+		try {
+			respTarea = restTemplate.getForEntity(
+			"https://psa-projects.herokuapp.com/tasks/task?id={idTarea}",
+				ObjectNode.class, idTarea);	
+		} catch (HttpStatusCodeException e) {
+			if (e.getStatusCode() == HttpStatus.NOT_FOUND)
+				throw new TareaNoEncontradaExcepcion(idTarea);
+			throw e;
+		} 
+
+		ObjectNode nodeTarea = respTarea.getBody();
+		if (nodeTarea.get("projectId").asInt() != idProyecto)
+			throw new TareaNoEncontradaExcepcion(idProyecto, idTarea);	
+
+		return new Tarea(nodeTarea.get("taskId").asInt(), nodeTarea.get("name").asText());
+	}
+
+	//Wrapper para POST cargarHoras
 	private static class CargaHora {
 		private double cantidadHoras;
 		private String fechaTrabajada;
