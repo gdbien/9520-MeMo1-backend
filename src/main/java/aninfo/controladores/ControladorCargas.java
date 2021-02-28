@@ -29,7 +29,7 @@ import aninfo.servicio.ServicioCargas;
 import aninfo.servicio.ServicioPersonas;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class ControladorCargas {
     @Autowired
     private ServicioCargas servicioHoras;

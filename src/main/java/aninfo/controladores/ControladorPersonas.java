@@ -12,7 +12,7 @@ import aninfo.modelo.Persona;
 import aninfo.servicio.ServicioPersonas;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 public class ControladorPersonas {
     @Autowired
     private ServicioPersonas servicioPersonas;
